@@ -1,0 +1,74 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+/* categorie scroll css */
+/* Scroll container styles */
+.scroll-container {
+    display: flex;
+    align-items: center;
+    overflow: hidden; /* Hide horizontal scrollbar */
+}
+
+/* Categories container styles */
+.categories-container {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent items from wrapping to the next line */
+    padding: 10px; /* Add padding for space */
+    overflow-x: scroll; /* Enable horizontal scrolling */
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Style for left and right buttons */
+.scroll-button {
+    /* background-color: #f0f0f0; */
+    color: #333;
+    font-size: 24px;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: -15px;
+}
+
+.scroll-button:hover {
+    background-color: #ddd;
+}
+
+/* Style for the left button */
+.scroll-left {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+/* Style for the right button */
+.scroll-right {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.categories-container {
+    display: flex;
+    flex-wrap: nowrap;
+    padding: 10px;
+    overflow-x: auto; /* Use "auto" to enable scrolling only when needed */
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
+    white-space: nowrap;
+}
+
+/* Hide the scroll bar thumb */
+.categories-container::-webkit-scrollbar {
+    width: 0.5em;
+}
+
+.categories-container::-webkit-scrollbar-thumb {
+    background-color: transparent;
+}
+/* Style the active category link */
+.category-link:active {
+    color: #ff0000; /* Change to your desired color */
+}
+
+
+
