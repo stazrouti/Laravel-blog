@@ -5,19 +5,19 @@
 <div class="alert alert-warning">
     <script>
 
-    Swal.fire({
-    title: 'Sign in required?',
-    text: "Sign in to comment!",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Sign-in'
-}).then((result) => {
-    if (result.isConfirmed) {
-        window.location.href = "/sign-in"; // Redirect to the sign-in page
-    }
-});
+        Swal.fire({
+        title: 'Sign in required?',
+        text: "Sign in to comment!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sign-in'
+        }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "/sign-in"; // Redirect to the sign-in page
+        }
+        });
     </script>
 </div>
 @endif
@@ -26,6 +26,36 @@
         <h1 class="mt-5 mb-5 uppercase tracking-wide text-sm text-indigo-500 font-semibold">{{ $post->title }}</h1>
         <img src="{{ $post->picture }}" class="h-48 w-full object-cover md:h-80 md:w-100"  alt="Image de couverture">
         <p class="text-gray-500 text-sm"><a href="{{ route('categories.show', ['id' => $post->category_id]) }}" class="text-black hover:text-black-400">{{ $post->category_name }}</a></p>
+        <p class="text-gray-500 text-sm ml-2">  
+            @if (Auth::check() )
+            <form method="POST" action="{{ route('Like.UpdateLike',['id'=>$post->id])}}">
+            
+                @csrf
+                @method('PUT')
+                <button class="delete-button" >
+                    @if($userLiked)
+                        <i class="fa-solid fa-heart text-red-500"></i>{{ $post->likes }}
+                    @else
+                        <i class="fa-regular fa-heart"></i>{{ $post->likes }}
+                    @endif
+               
+            </form>
+            
+            @else
+            
+                <i class="fa-regular fa-heart"></i> : {{ $post->likes }}
+            @endif
+            <!--<div class="post @if ($userLiked) liked @endif">
+             Post content -->
+
+            <!-- @if ($userLiked)
+                <p>You have liked this post!</p>
+            @else
+                <p>You have not liked this post.</p>
+            @endif 
+            </div>-->
+
+        </p>
         <p class="text-gray-500 text-sm ml-2">publish date:{{ $post->created_at }}</p>
         <div class="m-2 text-slate-500 w-75 text-2xl leading-relaxed ">{{ $post->content }}</div>
         

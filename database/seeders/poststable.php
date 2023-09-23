@@ -29,6 +29,7 @@ class poststable extends Seeder
                 'picture' => $faker->imageUrl($width = 640, $height = 480),
                 'content' => $faker->text(1000),
                 'category_id' => $category_id, // Add the category_id column
+                'likes' => $faker->numberBetween(0, 500), // Random likes between 0 and 100
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);

@@ -42,6 +42,10 @@ Route::group(['middleware' => 'RedirectToPreviousPage'], function () {
 Route::get('/categories/{id}', [CategoriesController::class, 'show'])->name('categories.show');
 //comment route
 Route::resource('comments', CommentController::class)->only(['store', 'destroy']);
+//like to + -  like
+Route::PUT('/Like/{id}', [PostController::class, 'UpdateLike'])->name('Like.UpdateLike');
+
+
 
 // Email Verification Routes...
 

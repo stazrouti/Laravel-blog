@@ -4,20 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\post;
 use App\Models\Comment;
+use App\Models\PostLikes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage; // <= importer Storage
+use Illuminate\Support\Facades\Auth;
+
 
 class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        //make poste by order
+        $orderValue = $request->input('OrderValue', 'created_at'); // Default to 'Date' if not provided
         //select all posts
         /* $posts = Post::latest()->get(); */
         $posts = Post::join('categories', 'posts.category_id', '=', 'categories.id')
         ->select('posts.*', 'categories.name as category_name',)
+        ->orderBy($orderValue, 'desc')
         ->paginate(10); // Specify the number of items per page (e.g., 10)
         //dd($posts);
         // Customize the pagination settings
@@ -71,8 +77,12 @@ class PostController extends Controller
         ->select('comments.*','comments.id as cmid','users.name as name')
         ->where('post_id', $post->id)
         ->get();
+        // Check if the current user has liked the post
+        $userLiked = PostLikes::where('post_id', $post->id)
+        ->where('user_id', Auth::id())
+        ->exists();
         
-        return view("posts.show", compact("post", "comments"));
+        return view("posts.show", compact("post", "comments","userLiked"));
     }
     
 
@@ -141,4 +151,33 @@ class PostController extends Controller
         // Redirection route "posts.index"
         return redirect(route('posts.index'));
     }
+    //make  an update to increment the like number
+    public function UpdateLike(Request $request, $id)
+    {
+        $post = Post::find($id);
+    
+        // Check if the user has already liked the post.
+        $postLike = PostLikes::where('user_id', $request->user()->id)->where('post_id', $id)->first();
+    
+        if ($postLike === null) {
+            // The user has not already liked the post, so insert a new row into the table.
+            PostLikes::create([
+                'user_id' => $request->user()->id,
+                'post_id' => $id,
+            ]);
+    
+            // Increment the like count of the post.
+            $post->increment('likes'); // Assuming 'likes' is the column name in your table.
+        } else {
+            // The user has already liked the post, so delete the row from the table.
+            $postLike->delete();
+    
+            // Decrement the like count of the post.
+            $post->decrement('likes'); // Assuming 'likes' is the column name in your table.
+        }
+    
+        return redirect()->back();
+    }
+    
+
 }

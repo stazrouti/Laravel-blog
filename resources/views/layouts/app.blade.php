@@ -56,7 +56,7 @@
     <footer class="bg-gray-800 text-white py-6">
     <div class="container mx-auto flex justify-between items-center">
         <div class="text-lg font-semibold">
-            Your Company Name
+            Blog
         </div>
         <div class="space-x-4">
             <a href="#" class="hover:text-gray-400">Home</a>

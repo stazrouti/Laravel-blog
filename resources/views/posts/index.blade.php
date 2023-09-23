@@ -9,16 +9,27 @@
 @section("content")
 <div class="py-8 container">
     <h1 class="text-3xl font-semibold mb-4 ml-1"> @if(isset($categoryName)) Category : {{$categoryName}} @else All  @endif</h1>
-    <div id="selected-category" class="text-3xl font-semibold mb-4"></div>
-
-
-
 
     <p>
         <!-- <a href="{{ route('posts.create') }}" title="Créer un article" class="text-blue-500 font-semibold underline">Créer un nouveau post</a> -->
     </p>
 
+    <form action="{{ route('posts.index') }}" method="GET" class="mb-4">
+        <!-- Other filter options (e.g., category) -->
+
+        <!-- Filter by Date -->
+        <label for="date" class="mr-2">Order By:</label>
+        <select name="OrderValue" id="OrderValue">
+            <option value="created_at">Date</option>
+            <option value="Like">Like</option>
+            <option value="Popular">Popular</option>
+        </select>
+
+        
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Filter</button>
+    </form>
     <div class="mt-8 p-10 border flex">
+
         <div class="w-75 ">
             @foreach ($posts as $post)
             <div class="md:flex  mt-2 rounded-xl shadow-md overflow-hidden">
