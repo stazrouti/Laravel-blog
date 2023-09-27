@@ -13,15 +13,19 @@
     <p>
         <!-- <a href="{{ route('posts.create') }}" title="Créer un article" class="text-blue-500 font-semibold underline">Créer un nouveau post</a> -->
     </p>
+    @if(isset($categoryName)) 
+    <form action="{{ route('categories.show', ['id' => $id]) }}" method="GET" class="mb-4">
 
-    <form action="{{ route('posts.index') }}" method="GET" class="mb-4">
+    @else
+        <form action="{{ route('posts.index') }}" method="GET" class="mb-4">
+    @endif
         <!-- Other filter options (e.g., category) -->
 
         <!-- Filter by Date -->
         <label for="date" class="mr-2">Order By:</label>
         <select name="OrderValue" id="OrderValue">
             <option value="created_at">Date</option>
-            <option value="Like">Like</option>
+            <option value="Likes">Like</option>
             <option value="Popular">Popular</option>
         </select>
 

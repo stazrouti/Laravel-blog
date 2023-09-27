@@ -17,17 +17,20 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        //make poste by order
+        //make posts by order
         $orderValue = $request->input('OrderValue', 'created_at'); // Default to 'Date' if not provided
-        //select all posts
-        /* $posts = Post::latest()->get(); */
+        if($request->input('OrderValue'))
+        {
+
+            $orderValue = $request->input('OrderValue', 'likes'); // Default to 'Date' if not provided
+        }
+
         $posts = Post::join('categories', 'posts.category_id', '=', 'categories.id')
         ->select('posts.*', 'categories.name as category_name',)
         ->orderBy($orderValue, 'desc')
         ->paginate(10); // Specify the number of items per page (e.g., 10)
         //dd($posts);
-        // Customize the pagination settings
-        //$posts->withPath('/custom-path'); // Customize the URL path
+
         $posts->onEachSide(2); // Customize the number of links on each side of the current page
         return view("posts.index", compact("posts"));
     }

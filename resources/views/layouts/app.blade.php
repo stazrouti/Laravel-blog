@@ -53,7 +53,7 @@
 	<!-- Le contenu -->
 	@yield("content")
     <!-- Footer  -->
-    <footer class="bg-gray-800 text-white py-6">
+    <footer class="bg-blue-500 text-white py-6">
     <div class="container mx-auto flex justify-between items-center">
         <div class="text-lg font-semibold">
             Blog
