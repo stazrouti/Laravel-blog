@@ -25,16 +25,22 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get("/Dashboard", [DashboardController::class,'index']);
 //get all posts
 Route::get("/Posts", [PostsApiController::class,'index']);
+//create a new post
+Route::post("/Posts/New", [PostsApiController::class,'store']);
+//update a post by its id
+Route::put("/Posts/{id}", [PostsApiController::class,'UpdatePost']);
 //get post details by its id
 Route::get("/Posts/{id}", [PostsApiController::class,'getPost']);
 //delete a post by its id
 Route::delete("/Posts/{id}", [PostsApiController::class,'DeletePost']);
 //get all categories
 Route::get("/Categories", [CategoriesApiController::class,'index']);
-//create a new post
-Route::post("/Posts/New", [PostsApiController::class,'store']);
-//update a post by its id
-Route::put("/Posts/{id}", [PostsApiController::class,'UpdatePost']);
+//New category
+Route::post("/Categories", [CategoriesApiController::class,'store']);
+//Delete category
+Route::delete("/Categories/{id}", [CategoriesApiController::class,'Delete']);
+//Update category
+Route::put("/Categories/{id}", [CategoriesApiController::class,'Update']);
 
 
 
