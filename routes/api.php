@@ -48,6 +48,9 @@ Route::put("/Categories/{id}", [CategoriesApiController::class,'Update']);
 
 //get users info
 Route::get("/Users", [UsersApiController::class,'index']);
+//delete a user
+Route::delete("/Users/{id}", [UsersApiController::class,'Delete']);
+
 
 
 
