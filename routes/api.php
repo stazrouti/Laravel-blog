@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PostsApiController;
 use App\Http\Controllers\CategoriesApiController;
+use App\Http\Controllers\UsersApiController;
 
 
 /*
@@ -33,6 +34,9 @@ Route::put("/Posts/{id}", [PostsApiController::class,'UpdatePost']);
 Route::get("/Posts/{id}", [PostsApiController::class,'getPost']);
 //delete a post by its id
 Route::delete("/Posts/{id}", [PostsApiController::class,'DeletePost']);
+
+//delete a comment by its id
+Route::delete("/Comment/{id}", [PostsApiController::class,'DeleteComment']);
 //get all categories
 Route::get("/Categories", [CategoriesApiController::class,'index']);
 //New category
@@ -41,6 +45,11 @@ Route::post("/Categories", [CategoriesApiController::class,'store']);
 Route::delete("/Categories/{id}", [CategoriesApiController::class,'Delete']);
 //Update category
 Route::put("/Categories/{id}", [CategoriesApiController::class,'Update']);
+
+//get users info
+Route::get("/Users", [UsersApiController::class,'index']);
+
+
 
 
 

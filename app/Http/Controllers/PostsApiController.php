@@ -173,6 +173,27 @@ class PostsApiController extends Controller
         // Return a JSON response with a success message and the updated post data
         return response()->json(['message' => 'Post updated successfully', 'post' => $post], 200);
     }
+    public function DeleteComment(Request $request, $id) {
+    
+        $comment = comment::find($id);
+        try{
+            if($comment)
+            {
+                comment::destroy($id);
+                
+                return response()->json(['message' => 'comment deleted successfully'], 200);
+            } 
+            else {
+                return response()->json(['message' => 'comment has associated posts. Cannot delete.'], 400);
+            }
+        }
+            catch (\Exception $e) {
+            // Handle any exceptions that occur during deletion
+            return response()->json(['error' => 'An error occurred while deleting the category'], 500);
+        }
+
+    
+    }
     
     
     
