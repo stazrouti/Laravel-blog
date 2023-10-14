@@ -17,24 +17,28 @@ class UsersApiController extends Controller
     //
     public function index()
     {
-        
-        try{
-
-            //$users=user::get();
+        try {
             $users = User::all()->map(function ($user) {
                 $formattedUser = $user->toArray();
-                $formattedUser['created_at'] = $user->created_at->format('d-m-y');
+                $formattedUser['created_at'] = $user->created_at->format('d-m-Y');
+                
+                // Check if email_verified_at is not null before formatting
+                if ($user->email_verified_at) {
+                    $formattedUser['email_verified_at'] = $user->email_verified_at->format('d-m-Y');
+                } else {
+                    $formattedUser['email_verified_at'] = null; // Handle null case
+                }
+                
                 return $formattedUser;
-            });  
-            
+            });
+    
             return response()->json($users);
-
-        }
-            catch (\Exception $e) {
-            // Handle any exceptions that occur during deletion
-            return response()->json(['error' => 'An error occurred while deleting the category'], 500);
+        } catch (\Exception $e) {
+            // Handle any exceptions that occur during the process
+            return response()->json(['error' => 'An error occurred while processing the request'], 500);
         }
     }
+    
     public function Delete(Request $request, $id)
     {
         $user = User::find($id);
@@ -54,4 +58,33 @@ class UsersApiController extends Controller
             return response()->json(['error' => 'An error occurred while deleting the category'], 500);
         }
     }
+
+    public function Update(Request $request, $id)
+    {
+        $user = User::find($id);
+        
+        if (!$user) {
+            return response()->json(['message' => 'User not found.'], 404);
+        }
+    
+        // Validate the request data
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            // Add other rules for additional fields
+        ]);
+    
+        try {
+            $user->update([
+                'name' => $request->name,
+                'email' => $request->email,
+            ]);
+    
+            return response()->json(['message' => 'User updated successfully'], 200);
+        } catch (\Exception $e) {
+            // Handle any exceptions that occur during the update
+            return response()->json(['error' => 'An error occurred while updating the user'], 500);
+        }
+    }
+    
 }
