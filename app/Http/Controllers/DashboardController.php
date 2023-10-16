@@ -74,11 +74,11 @@ class DashboardController extends Controller
             $MonthlyComment->month = $monthName;
         }
 
-        // Get the monthly comment by year and month.
+        // Get the monthly Likes by year and month.
         $MonthlyLikes = PostLikes::select(
             DB::raw('YEAR(created_at) as year'),
             DB::raw('MONTH(created_at) as month'),
-            DB::raw('COUNT(*) as comment_count')
+            DB::raw('COUNT(*) as likes_count')
         )
         ->groupBy(DB::raw('YEAR(created_at), MONTH(created_at)'))
         ->orderBy('year', 'asc')
