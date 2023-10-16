@@ -22,7 +22,7 @@ use App\Http\Controllers\UsersApiController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-//get analityque data
+//get analytique data
 Route::get("/Dashboard", [DashboardController::class,'index']);
 //get all posts
 Route::get("/Posts", [PostsApiController::class,'index']);
