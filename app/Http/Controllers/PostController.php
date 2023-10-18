@@ -18,16 +18,32 @@ class PostController extends Controller
     public function index(Request $request)
     {
         //make posts by order
-        $orderValue = $request->input('OrderValue', 'created_at'); // Default to 'Date' if not provided
-        if($request->input('OrderValue'))
-        {
+        /* $orderValue = $request->input('OrderValue', 'created_at'); // Default to 'Date' if not provided */
 
-            $orderValue = $request->input('OrderValue', 'likes'); // Default to 'Date' if not provided
+        if($request->input('OrderValue')=="Newest")
+        {
+            $orderValue="created_at";
+            $ord='desc';
+        }
+        elseif($request->input('OrderValue')=="Oldest")
+        {
+            $orderValue="created_at";
+            $ord= "asc";
+        }
+        elseif($request->input('OrderValue')=="Likes")
+        {
+            $orderValue="likes";
+            $ord='desc';
+        }
+        else
+        {
+            $orderValue="created_at";
+            $ord='desc';
         }
 
         $posts = Post::join('categories', 'posts.category_id', '=', 'categories.id')
         ->select('posts.*', 'categories.name as category_name',)
-        ->orderBy($orderValue, 'desc')
+        ->orderBy($orderValue, $ord)
         ->paginate(10); // Specify the number of items per page (e.g., 10)
         //dd($posts);
 

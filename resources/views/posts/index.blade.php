@@ -8,7 +8,7 @@
 
 @section("content")
 <div class="py-8 container">
-    <h1 class="text-3xl font-semibold mb-4 ml-1"> @if(isset($categoryName)) Category : {{$categoryName}} @else All  @endif</h1>
+    <h1 class="text-3xl font-semibold mb-4 ml-1"> @if(isset($categoryName)) Category : {{$categoryName}} @endif</h1>
 
     <p>
         <!-- <a href="{{ route('posts.create') }}" title="Créer un article" class="text-blue-500 font-semibold underline">Créer un nouveau post</a> -->
@@ -24,9 +24,9 @@
         <!-- Filter by Date -->
         <label for="date" class="mr-2">Order By:</label>
         <select name="OrderValue" id="OrderValue">
-            <option value="created_at">Date</option>
+            <option value="Newest">Newest</option>
+            <option value="Oldest">Oldest</option>
             <option value="Likes">Like</option>
-            <option value="Popular">Popular</option>
         </select>
 
         
@@ -34,7 +34,7 @@
     </form>
     <div class="mt-8 p-10 border flex">
 
-        <div class="w-75 ">
+        <div class="w-4/6 ">
             @foreach ($posts as $post)
             <div class="md:flex  mt-2 rounded-xl shadow-md overflow-hidden">
                 <div class="md:shrink-0">
@@ -56,14 +56,23 @@
             </div>
             @endforeach
         </div>
-        <div class="d-flex flex-grow-1 ml-4 border " style=";width:40%">
+        <div class="d-flex flex-grow-1 ml-5  w-2/6 h-fit" style="">
             <!-- Advertisements content goes here -->
-            <p>Advertisements</p>
+            <!-- <p>Advertisements</p> -->
+            <div class="mt-3 " >
+                <img style="height:300px" class="w-full rounded" src="https://marketingepic.com/wp-content/uploads/2017/02/Epic_Marketing_Blog_FeaturedPost_Imagery_v1-ads-01-01-1.jpg">
+            </div>
+            <div  class="mt-3 " >
+                <img style="height:300px" class="w-full" src="https://marketingepic.com/wp-content/uploads/2017/02/Epic_Marketing_Blog_FeaturedPost_Imagery_v1-ads-01-01-1.jpg">
+            </div>
+            <div class="mt-3" >
+                <img style="height:300px" class="w-full" src="https://marketingepic.com/wp-content/uploads/2017/02/Epic_Marketing_Blog_FeaturedPost_Imagery_v1-ads-01-01-1.jpg">
+            </div>
         </div>
 
 
     </div>
-    <div class="pagination">
+    <div class="pagination mt-1">
         {{ $posts->appends(request()->query())->onEachSide(2)->links() }}
 
     </div>

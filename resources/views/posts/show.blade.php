@@ -62,7 +62,16 @@
     </div>
     <div class="d-flex flex-grow-1 ml-4 border " style="width:40%">
             <!-- Advertisements content goes here -->
-            <p>Advertisements</p>
+            <!-- <p>Advertisements</p> -->
+            <div class="mt-3 " >
+                <img style="height:300px" class="w-full rounded" src="https://marketingepic.com/wp-content/uploads/2017/02/Epic_Marketing_Blog_FeaturedPost_Imagery_v1-ads-01-01-1.jpg">
+            </div>
+            <div  class="mt-3 " >
+                <img style="height:300px" class="w-full" src="https://marketingepic.com/wp-content/uploads/2017/02/Epic_Marketing_Blog_FeaturedPost_Imagery_v1-ads-01-01-1.jpg">
+            </div>
+            <div class="mt-3" >
+                <img style="height:300px" class="w-full" src="https://marketingepic.com/wp-content/uploads/2017/02/Epic_Marketing_Blog_FeaturedPost_Imagery_v1-ads-01-01-1.jpg">
+            </div>
     </div>
 </div>
 <div class="mt-6 w-3/4 p-10">

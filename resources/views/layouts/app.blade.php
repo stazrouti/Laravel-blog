@@ -11,6 +11,15 @@
 	<title>@yield("title")</title>
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
+    @vite('resources/js/search.js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    
+
+
+
+
 
 </head>
 <body>
@@ -20,10 +29,28 @@
         <a href="{{route('posts.index')}}" class="text-white text-lg font-semibold">Blog</a>
         
         <div class="hidden md:flex space-x-5">
-            <a href="{{ route('posts.index') }}" class="text-white hover:text-gray-300">Home</a>
-            <a href="/About" class="text-white hover:text-gray-300">About</a>
+            <!-- search bar -->                
+            <form class="form " id="search-form"  method="GET">
+                <button>
+                    <svg width="17" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="search">
+                        <path d="M7.667 12.667A5.333 5.333 0 107.667 2a5.333 5.333 0 000 10.667zM14.334 14l-2.9-2.9" stroke="currentColor" stroke-width="1.333" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </button>
+                <input class="input" placeholder="Type your text"  required="" type="text">
+                <button class="reset" type="reset">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </form>
+            <div id="search-results" class="bg-white mt-10  w-50 rounded" style="position:absolute;left:25%"></div>
+
+            
+                        <!-- search bar -->
+            <a href="{{ route('posts.index') }}" class="text-white hover:text-gray-300 mt-2">Home</a>
+            <a href="/About" class="text-white hover:text-gray-300 mt-2">About</a>
             <!-- <a href="#" class="text-white hover:text-gray-300">Services</a> -->
-            <a href="/Contact" class="text-white hover:text-gray-300">Contact</a>
+            <a href="/Contact" class="text-white hover:text-gray-300 mt-2">Contact</a>
         </div>
 
         

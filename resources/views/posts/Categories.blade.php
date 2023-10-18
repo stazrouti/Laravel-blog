@@ -1,5 +1,5 @@
 <div class="scroll-container hidden md:flex">
-    <button id="scroll-left" class="scroll-button scroll-left"><i class="fa-solid fa-square-caret-left"></i></button>
+    <button id="scroll-left" class="scroll-button scroll-left color-indigo-500"><i class="fa-solid fa-square-caret-left"></i></button>
     <div class="categories-container">
         <ul class="hidden md:flex space-x-5">
             @foreach ($categories as $category)

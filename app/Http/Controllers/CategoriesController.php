@@ -18,18 +18,32 @@ class CategoriesController extends Controller
         // Retrieve the category by its ID
         $category = categories::findOrFail($id); // Assuming your model is named "Category" (singular)
         
-                //make poste by order
-        $orderValue = $request->input('OrderValue', 'created_at'); // Default to 'Date' if not provided
-        if($request->input('OrderValue'))
+        //make poste by order
+        if($request->input('OrderValue')=="Newest")
         {
-
-            $orderValue = $request->input('OrderValue', 'likes'); // Default to 'Date' if not provided
+            $orderValue="created_at";
+            $ord='desc';
+        }
+        elseif($request->input('OrderValue')=="Oldest")
+        {
+            $orderValue="created_at";
+            $ord= "asc";
+        }
+        elseif($request->input('OrderValue')=="Likes")
+        {
+            $orderValue="likes";
+            $ord='desc';
+        }
+        else
+        {
+            $orderValue="created_at";
+            $ord='desc';
         }
         // Retrieve posts with the same category_id
         $posts = Post::join('categories', 'posts.category_id', '=', 'categories.id')
             ->select('posts.*', 'categories.name as category_name')
             ->where('category_id', $id)
-            ->orderBy($orderValue, 'desc')
+            ->orderBy($orderValue, $ord)
             ->paginate(10);
     
         // Get the category name
