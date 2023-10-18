@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PostsApiController;
 use App\Http\Controllers\CategoriesApiController;
 use App\Http\Controllers\UsersApiController;
+use App\Http\Controllers\ContactController;
 
 
 /*
@@ -52,6 +53,10 @@ Route::get("/Users", [UsersApiController::class,'index']);
 Route::delete("/Users/{id}", [UsersApiController::class,'Delete']);
 //update user info
 Route::put("/Users/{id}", [UsersApiController::class,'Update']);
+//get contact messages
+Route::get("/Contact", [ContactController::class,'index']);
+Route::put("/Contact/Read/{id}", [ContactController::class,'State']);
+Route::delete("/Contact/{id}", [ContactController::class,'Delete']);
 
 
 

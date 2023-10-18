@@ -21,9 +21,9 @@
         
         <div class="hidden md:flex space-x-5">
             <a href="{{ route('posts.index') }}" class="text-white hover:text-gray-300">Home</a>
-            <a href="#" class="text-white hover:text-gray-300">About</a>
-            <a href="#" class="text-white hover:text-gray-300">Services</a>
-            <a href="#" class="text-white hover:text-gray-300">Contact</a>
+            <a href="/About" class="text-white hover:text-gray-300">About</a>
+            <!-- <a href="#" class="text-white hover:text-gray-300">Services</a> -->
+            <a href="/Contact" class="text-white hover:text-gray-300">Contact</a>
         </div>
 
         
@@ -55,16 +55,16 @@
     <!-- Footer  -->
     <footer class="bg-blue-500 text-white py-6">
     <div class="container mx-auto flex justify-between items-center">
-        <div class="text-lg font-semibold">
+        <div class="text-lg font-semibold pl-2">
             Blog
         </div>
         <div class="space-x-4">
             <a href="#" class="hover:text-gray-400">Home</a>
-            <a href="#" class="hover:text-gray-400">About</a>
-            <a href="#" class="hover:text-gray-400">Services</a>
-            <a href="#" class="hover:text-gray-400">Contact</a>
+            <a href="About" class="hover:text-gray-400">About</a>
+            <!-- <a href="#" class="hover:text-gray-400">Services</a> -->
+            <a href="/Contact" class="hover:text-gray-400">Contact</a>
         </div>
-        <div class="flex items-center space-x-4">
+        <div class="flex items-center space-x-4 mr-2">
             <a href="#" class="text-gray-400 hover:text-white">
                 <i class="fab fa-facebook"></i>
             </a>

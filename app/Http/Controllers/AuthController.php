@@ -8,6 +8,8 @@ use Illuminate\Http\RedirectResponse;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\middleware\RedirectToPreviousPage;
+use Carbon\Carbon;
+
 
 
 class AuthController extends Controller
@@ -20,6 +22,14 @@ class AuthController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
+        $user = User::where('email', $request->email)->first();
+        $user->update(['last_visit' => Carbon::now()]);
+        /* if($user->update(['last_visit' => Carbon::now()]))
+        {
+            return redirect()->back()->withErrors([
+                'email' => 'error updating lastvists.',
+            ]);
+        } */
     
         // Check if the "remember" checkbox is checked
         $remember = $request->has('remember');

@@ -29,6 +29,7 @@ class Userseader extends Seeder
                 'name' => $Faker->name,
                 'email' => $Faker->unique()->safeEmail,
                 'password' => Hash::make('password'), // Replace 'password' with the desired default password
+                'last_visit' => Carbon::now(),
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ];

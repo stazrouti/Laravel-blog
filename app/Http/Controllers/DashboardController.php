@@ -9,6 +9,8 @@ use App\Models\post;
 use App\Models\Comment;
 use App\Models\PostLikes;
 use App\Models\Visit;
+use App\Models\User;
+use App\Models\Categories;
 
 class DashboardController extends Controller
 {
@@ -20,6 +22,16 @@ class DashboardController extends Controller
         $TotalComment = Comment::count();
         $TotalLikes = Post::sum('likes');
         $TotalVisits = Visit::count();
+        $TotalUsers = User::count();
+        $TotalCategories = Categories::count();
+
+        $currentMonth = Carbon::now();
+        $users = User::whereYear('last_visit', $currentMonth->year)
+            ->whereMonth('last_visit', $currentMonth->month)
+            ->get();
+        
+        $ActiveUsers = $users->count();
+        
     
         // Get the monthly visits by year and month.
         $MonthlyVisits = Visit::select(
@@ -98,6 +110,9 @@ class DashboardController extends Controller
             "TotalComment" => $TotalComment,
             "TotalLikes" => $TotalLikes,
             "TotalVisits" => $TotalVisits,
+            "TotalUsers" => $TotalUsers,
+            "TotalCategories" => $TotalCategories,
+            "ActifUsers" => $ActiveUsers,
             "MonthlyVisits" => $MonthlyVisits,
             "MonthlyPosts" => $MonthlyPosts,
             "MonthlyComments" => $MonthlyComments,
