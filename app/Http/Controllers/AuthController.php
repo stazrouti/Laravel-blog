@@ -89,7 +89,8 @@ class AuthController extends Controller
             //dd($previousUrl);
             $request->session()->forget('previous_url'); // Clear the stored URL
             Auth::logout(); // Log the user out
-            session()->flush(); // Destroy the session
+            //session()->flush(); // Destroy the session
+            $request->session()->forget('UserEmail');
             $cookie = cookie('UserEmail', '', -1); // Set the expiration to a past date to remove the cookie
             return redirect()->intended($previousUrl);
         }
