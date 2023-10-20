@@ -68,8 +68,9 @@ class ContactController extends Controller
         $affected = DB::table('contact')
               ->where('id', $id)
               ->update(['read' => 1]);
+        $verify=DB::table('contact')->where('id', $id)->where('read',1);
         /* if($Contact->update(['`read`' => 1])) */
-        if($affected)
+        if($affected || $verify) 
         {
         return response()->json(['message' => 'Message marked as read',$id], 200);
         }
@@ -83,11 +84,11 @@ class ContactController extends Controller
         try {
             $contact=contact::destroy($id);
 
-                return response()->json(['message' => 'contact deleted successfully'], 200);
+                return response()->json(['message' => 'message deleted successfully'], 200);
 
         } catch (\Exception $e) {
             // Handle any exceptions that occur during deletion
-            return response()->json(['error' => 'An error occurred while deleting the category',$e], 500);
+            return response()->json(['error' => 'An error occurred while deleting the message',$e], 500);
         }
     }
 
