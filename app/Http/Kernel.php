@@ -68,5 +68,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'RedirectToPreviousPage' => \App\Http\Middleware\RedirectToPreviousPage::class,
         'VisitMiddleware' => \App\Http\Middleware\VisitMiddleware::class,
+        'session_auth' => \App\Http\Middleware\SessionAdminMiddleware::class,
+
     ];
 }

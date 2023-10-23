@@ -9,6 +9,7 @@ use Laravel\Sanctum\PersonalAccessToken as SanctumPersonalAccessToken;
 use Laravel\Sanctum\HasApiTokens;
 
 
+
 class Admin extends Model
 {
     use HasFactory;

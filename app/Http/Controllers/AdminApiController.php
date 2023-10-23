@@ -16,8 +16,14 @@ class AdminApiController extends Controller
         $admin = Admin::where('email', $credentials['email'])->first();
     
         if ($admin && Hash::check($credentials['password'], $admin->password)) {
+            //$token = $admin->createToken('admin-token')->plainTextToken;
+            //add time to token 
             $token = $admin->createToken('admin-token')->plainTextToken;
-            return response()->json(['message' => 'Authentication successful','token' => $token]);
+            $adminName = $admin->name;
+            /* $token->token->expires_at = now()->addHours(2); // Set the expiration time 2 hours from now
+            $token->token->save(); */
+            
+            return response()->json(['message' => 'Authentication successful','admin_name'=>$adminName,'token' => $token]);
         } else {
             // Authentication failed
             return response()->json(['message' => 'Invalid credentials'], 401);
