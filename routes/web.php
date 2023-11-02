@@ -30,7 +30,9 @@ Route::group(['middleware' => 'VisitMiddleware'], function () {
     Route::resource("posts", PostController::class);
 
 
+
     Route::group(['middleware' => 'RedirectToPreviousPage'], function () {
+        /* Auth::routes(['verify' => true]); */
         Route::get('/sign-in', function () {
             return view('Authentification.SignIn');
         })->name('Sign-in'); 
@@ -38,9 +40,16 @@ Route::group(['middleware' => 'VisitMiddleware'], function () {
         Route::get('/sign-up', function () {
             return view('Authentification.SignUp');
         })->name('Sign-up'); 
-        
-        Route::get('/Logout',[AuthController::class,'Logout']);
-    });
+
+        //get the verfication email form
+        route::get('/VerifyEmail', function () {
+            return view('Authentification.verify-email');
+            })->name('VerifyEmail');
+            
+            Route::get('/Logout',[AuthController::class,'Logout']);
+        });
+        //verifying the email verification code
+        Route::post('/verify-email',[AuthController::class,'verifyEmail'])->name('verify.email');
     Route::post('/sign-up',[AuthController::class,'Signup']);
         Route::post('/sign-in',[AuthController::class,'Signin']);
     //show posts by  category

@@ -13,7 +13,7 @@ use Illuminate\Auth\Events\Registered;
 //event(new Registered($user));
 
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -27,6 +27,7 @@ class User extends Authenticatable
         'email',
         'password',
         'last_visit',
+        'email_verified_at',
     ];
 
     /**
