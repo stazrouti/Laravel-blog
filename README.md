@@ -41,6 +41,7 @@
   <summary>Client</summary>
   <ul>
     <li><a href="#">Laravel  </a></li>
+    <li><a href="#">Blad  </a></li>
     <li><a href="#">Tailwindcss </a></li>
     <li><a href="#">Mysql </a></li>
     
