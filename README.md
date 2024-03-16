@@ -40,7 +40,7 @@
 <details>
   <summary>Client</summary>
   <ul>
-    <li><a href="#">Blad  </a></li>
+    <li><a href="#">Blade  </a></li>
     <li><a href="#">Tailwindcss </a></li>
     <li><a href="#">Javascript </a></li>
     
