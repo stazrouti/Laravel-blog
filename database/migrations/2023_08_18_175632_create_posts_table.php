@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('picture');
             $table->text('content');
             $table->unsignedBigInteger('category_id');
+            $table->integer('likes');
             $table->timestamps();
         });
     }
