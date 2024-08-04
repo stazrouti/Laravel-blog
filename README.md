@@ -149,6 +149,20 @@ To run this project
 ```shell
  php artisan serve
 ```
+
+### make the migration
+To make the migration
+
+```shell
+ php artisan migrate
+```
+### Fill the database 
+To Fill the database 
+
+```shell
+ php artisan db:seed
+```
+
 ### migration error
 if you face migration error just hide this code from 
  - \blog\app\Providers\AppServiceProvider.php
