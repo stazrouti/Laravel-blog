@@ -149,7 +149,13 @@ To run this project
 ```shell
  php artisan serve
 ```
-
+### migration error
+if you face migration error just hide this code from 
+ - \blog\app\Providers\AppServiceProvider.php
+```shell
+ $categories = Categories::all();
+    View::share('categories', $categories);
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
