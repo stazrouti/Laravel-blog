@@ -22,7 +22,10 @@ class visittable extends Seeder
         $visit = [];
         // Set the date range to be within the current year
         $startDate = Carbon::now()->startOfYear();
-        $endDate = Carbon::now();
+        $endDate = Carbon::now()->endOfYear();
+        /*
+        if you want data to be generated until the current date
+         $endDate = Carbon::now(); */
     
         // Generate 20 random users
         for ($i = 1; $i <= 243; $i++) {
