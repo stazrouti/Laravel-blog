@@ -37,7 +37,7 @@ class post_likes_table extends Seeder
                 $postLikes[] = [
                     'user_id' => $faker->randomElement($userIds),
                     'post_id' => $post->id,
-                    'created_at' => $faker->dateTimeBetween($createdAt, now()), // Random timestamp within post's creation date and now
+                    'created_at' =>  now(), // Random timestamp within post's creation date and now
                     'updated_at' => now(),
                 ];
     
