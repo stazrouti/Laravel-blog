@@ -64,13 +64,13 @@
             <!-- Advertisements content goes here -->
             <!-- <p>Advertisements</p> -->
             <div class="mt-3 " >
-                <img style="height:300px" class="w-full rounded" src="https://marketingepic.com/wp-content/uploads/2017/02/Epic_Marketing_Blog_FeaturedPost_Imagery_v1-ads-01-01-1.jpg">
+                <img style="height:300px" class="w-full rounded" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEiGyLSrFdNKMjbVDTm4Ss3eFGguRdcvpwmell0qAdxQ&s">
             </div>
             <div  class="mt-3 " >
-                <img style="height:300px" class="w-full" src="https://marketingepic.com/wp-content/uploads/2017/02/Epic_Marketing_Blog_FeaturedPost_Imagery_v1-ads-01-01-1.jpg">
+                <img style="height:300px" class="w-full" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEiGyLSrFdNKMjbVDTm4Ss3eFGguRdcvpwmell0qAdxQ&s">
             </div>
             <div class="mt-3" >
-                <img style="height:300px" class="w-full" src="https://marketingepic.com/wp-content/uploads/2017/02/Epic_Marketing_Blog_FeaturedPost_Imagery_v1-ads-01-01-1.jpg">
+                <img style="height:300px" class="w-full" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEiGyLSrFdNKMjbVDTm4Ss3eFGguRdcvpwmell0qAdxQ&s">
             </div>
     </div>
 </div>
