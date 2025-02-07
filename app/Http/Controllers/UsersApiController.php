@@ -55,7 +55,7 @@ class UsersApiController extends Controller
         }
             catch (\Exception $e) {
             // Handle any exceptions that occur during deletion
-            return response()->json(['error' => 'An error occurred while deleting the category'], 500);
+            return response()->json(['error' => 'An error occurred while deleting the user'], 500);
         }
     }
 
