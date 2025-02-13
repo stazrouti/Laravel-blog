@@ -1,25 +1,34 @@
 name: Run API Tests
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
 
 jobs:
   test:
     runs-on: ubuntu-latest
+
     services:
       mysql:
         image: mysql:8
         env:
-          MYSQL_DATABASE: laravel_test
-          MYSQL_USER: user
-          MYSQL_PASSWORD: password
-          MYSQL_ROOT_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: secret
+          MYSQL_DATABASE: test_db
+          MYSQL_USER: test_user
+          MYSQL_PASSWORD: test_password
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping --host=localhost"
+          --health-cmd="mysqladmin ping -h 127.0.0.1 --silent"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=5
+          --health-retries=3
 
     steps:
       - name: Checkout code
@@ -28,26 +37,53 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.1
-          extensions: mbstring, pdo, pdo_mysql
+          php-version: 8.2
+          extensions: mbstring, bcmath, pdo, pdo_mysql
           coverage: none
 
-      - name: Install dependencies
+      - name: Install Composer dependencies
+        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Copy .env file
+        run: cp .env.ci .env
+
+      - name: Set correct permissions
+        run: chmod -R 777 storage bootstrap/cache
+
+      - name: Generate application key
+        run: php artisan key:generate
+
+      - name: Wait for MySQL to be ready
         run: |
-          composer install --no-progress --prefer-dist --optimize-autoloader
-          cp .env.ci .env
-          php artisan key:generate
+          until mysqladmin ping -h 127.0.0.1 --silent; do
+            echo "Waiting for MySQL..."
+            sleep 2
+          done
 
-      - name: Set up database
+      - name: Run database migrations
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: test_db
+          DB_USERNAME: test_user
+          DB_PASSWORD: test_password
+        run: php artisan migrate --force
+
+      - name: Run tests with PHPUnit
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: test_db
+          DB_USERNAME: test_user
+          DB_PASSWORD: test_password
+        run: vendor/bin/phpunit --testdox
+
+      - name: Run API tests with Newman (Postman CLI)
         run: |
-          php artisan migrate --force
-          php artisan db:seed --force
+          npm install -g newman
+          newman run postman_collection.json --env-var "base_url=http://127.0.0.1:8000/api"
 
-      - name: Start Laravel server
-        run: php artisan serve --host=0.0.0.0 --port=8000 &
-
-      - name: Install Newman
-        run: npm install -g newman
-
-      - name: Run API tests
-        run: newman run tests/api_collection.json -e tests/api_environment.json
+      - name: Clean up
+        run: php artisan cache:clear && php artisan config:clear
