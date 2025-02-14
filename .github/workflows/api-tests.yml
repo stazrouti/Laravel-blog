@@ -39,7 +39,16 @@ jobs:
       - name: Generate application key
         run: php artisan key:generate
       - name: Wait for MySQL to be ready
-        run: sleep 30
+        run: |
+          echo "Waiting for MySQL to be ready..."
+          for i in {1..30}; do
+            if mysqladmin ping -h mysql --silent; then
+              echo "MySQL is ready!"
+              break
+            fi
+            echo "Waiting for MySQL..."
+            sleep 1
+          done
       - name: Run migrations
         run: php artisan migrate
       - name: Run tests
