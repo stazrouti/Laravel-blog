@@ -59,10 +59,9 @@ jobs:
 
     - name: Run Package Discover
       run: composer run-script post-autoload-dump
-    - name: Run The project
-      run: php artisan serve 
 
     - name: Run API tests with Newman (Postman CLI)
       run: |
+        php artisan serve 
         npm install -g newman
         newman run laravel_blog.postman_collection.json 
