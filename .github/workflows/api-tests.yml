@@ -1,11 +1,3 @@
-name: Laravel CI
-
-on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
-
 jobs:
   laravel-tests:
     runs-on: ubuntu-latest
@@ -15,6 +7,7 @@ jobs:
         image: mysql:5.7
         env:
           MYSQL_ROOT_PASSWORD: secret
+          MYSQL_DATABASE: laravel_test
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -30,11 +23,11 @@ jobs:
         extensions: mbstring, ctype, fileinfo, openssl, pdo_mysql, sodium, intl
         coverage: none
 
-    - name: Install Dependencies
-      run: composer install --prefer-dist --no-progress --no-interaction
-
     - name: Copy CI Environment
       run: cp .env.ci .env
+
+    - name: Install Dependencies (without scripts)
+      run: composer install --prefer-dist --no-progress --no-interaction --no-scripts
 
     - name: Generate App Key
       run: php artisan key:generate
@@ -42,12 +35,23 @@ jobs:
     - name: Setup Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
 
-    - name: Create Database
+    - name: Wait for MySQL
       run: |
-        mysql -h 127.0.0.1 -uroot -psecret -e "CREATE DATABASE IF NOT EXISTS laravel_test;"
-        php artisan migrate:fresh --seed
+        for i in `seq 1 10`;
+        do
+          mysql -h 127.0.0.1 -uroot -psecret -e 'status' > /dev/null 2>&1 && break
+          echo "Waiting for database connection..."
+          sleep 2
+        done
+
+    - name: Create Database
+      run: mysql -h 127.0.0.1 -uroot -psecret -e "CREATE DATABASE IF NOT EXISTS laravel_test;"
+
+    - name: Run Migrations
+      run: php artisan migrate:fresh --seed
+
+    - name: Run Package Discover
+      run: composer run-script post-autoload-dump
 
     - name: Run Tests
-      env:
-        APP_ENV: ci
       run: php artisan test
