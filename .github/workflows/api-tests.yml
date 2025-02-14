@@ -10,7 +10,7 @@ jobs:
       mysql:
         image: mysql:5.7
         env:
-          MYSQL_ROOT_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: your_password_here
           MYSQL_DATABASE: test_db
         ports:
           - 3306:3306
@@ -21,11 +21,14 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.0
+          php-version: 8.2
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
       - name: Copy .env.example to .env
         run: cp .env.example .env
+      - name: Update .env with database credentials
+        run: |
+          sed -i 's/DB_PASSWORD=/DB_PASSWORD=your_password_here/' .env
       - name: Generate application key
         run: php artisan key:generate
       - name: Run migrations
