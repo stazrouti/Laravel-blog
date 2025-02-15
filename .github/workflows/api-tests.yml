@@ -62,6 +62,7 @@ jobs:
 
     - name: Run API tests with Newman (Postman CLI)
       run: |
-        php artisan serve 
+        nohup php artisan serve --host=0.0.0.0 --port=8000 > /dev/null 2>&1 &
+        sleep 5
         npm install -g newman
-        newman run laravel_blog.postman_collection.json 
+        newman run laravel_blog.postman_collection.json
