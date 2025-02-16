@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use App\Models\post;
+use App\Models\Post;
 use App\Models\User;
 use App\Models\PostLikes;
 

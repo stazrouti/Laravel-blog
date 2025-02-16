@@ -135,10 +135,18 @@ https://github.com/stazrouti/Laravel-blog.git
 Install this project with:
 
 ` cd Laravel-blog
+  ```shell
   - Run composer install after cloning the repo
+  ```
+  ```shell
   - Run cp .env.example .env
+  ```
+  ```shell
   - Run php artisan key:generate
+  ```
+  ```shell
   - Run php artisan php artisan migrate
+  ```
 
 
 

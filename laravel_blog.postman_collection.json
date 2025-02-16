@@ -1,0 +1,1413 @@
+{
+	"info": {
+		"_postman_id": "90a74b86-461d-4cf6-99f6-30c211c602ba",
+		"name": "laravel blog",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27726018"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Invalid login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\":\"salaheddinetazrouti@gmail.com\",\"password\":\"12345678\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/Login",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "valid login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the response body as JSON\r",
+									"let response = pm.response.json();\r",
+									"\r",
+									"// Check if the response contains the token\r",
+									"if (response.token) {\r",
+									"    // Add 'Bearer ' prefix to the token and save it as an environment variable\r",
+									"    pm.environment.set(\"authToken\", `Bearer ${response.token}`);\r",
+									"    console.log(\"Bearer token saved to environment variable: authToken\");\r",
+									"} else {\r",
+									"    console.error(\"Token not found in the response\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\":\"admin@gmail.com\",\"password\":\"admin\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/Login",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dashboard",
+			"item": [
+				{
+					"name": "valid authentication",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse response\r",
+									"let response = pm.response.json();\r",
+									"\r",
+									"// Test 1: Check if the response has the correct top-level structure\r",
+									"pm.test(\"Validate top-level keys in the response\", function () {\r",
+									"    pm.expect(response).to.have.keys([\r",
+									"        \"TotalPosts\",\r",
+									"        \"TotalComment\",\r",
+									"        \"TotalLikes\",\r",
+									"        \"TotalVisits\",\r",
+									"        \"TotalUsers\",\r",
+									"        \"TotalCategories\",\r",
+									"        \"ActifUsers\",\r",
+									"        \"MonthlyVisits\",\r",
+									"        \"MonthlyPosts\",\r",
+									"        \"MonthlyComments\",\r",
+									"        \"MonthlyLikes\"\r",
+									"    ]);\r",
+									"});\r",
+									"\r",
+									"// Test 2: Validate the types of top-level keys\r",
+									"pm.test(\"Validate data types of top-level keys\", function () {\r",
+									"    pm.expect(response.TotalPosts).to.be.a(\"number\");\r",
+									"    pm.expect(response.TotalComment).to.be.a(\"number\");\r",
+									"    pm.expect(response.TotalLikes).to.be.a(\"string\");\r",
+									"    pm.expect(response.TotalVisits).to.be.a(\"number\");\r",
+									"    pm.expect(response.TotalUsers).to.be.a(\"number\");\r",
+									"    pm.expect(response.TotalCategories).to.be.a(\"number\");\r",
+									"    pm.expect(response.ActifUsers).to.be.a(\"number\");\r",
+									"    pm.expect(response.MonthlyVisits).to.be.an(\"array\");\r",
+									"    pm.expect(response.MonthlyPosts).to.be.an(\"array\");\r",
+									"    pm.expect(response.MonthlyComments).to.be.an(\"array\");\r",
+									"    pm.expect(response.MonthlyLikes).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"// Test 3: Validate structure of MonthlyVisits array\r",
+									"pm.test(\"Validate structure of MonthlyVisits array\", function () {\r",
+									"    response.MonthlyVisits.forEach((item) => {\r",
+									"        pm.expect(item).to.have.keys([\"year\", \"month\", \"visit_count\"]);\r",
+									"        pm.expect(item.year).to.be.a(\"number\");\r",
+									"        pm.expect(item.month).to.be.a(\"string\");\r",
+									"        pm.expect(item.visit_count).to.be.a(\"number\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Test 4: Validate structure of MonthlyPosts array\r",
+									"pm.test(\"Validate structure of MonthlyPosts array\", function () {\r",
+									"    response.MonthlyPosts.forEach((item) => {\r",
+									"        pm.expect(item).to.have.keys([\"year\", \"month\", \"post_count\"]);\r",
+									"        pm.expect(item.year).to.be.a(\"number\");\r",
+									"        pm.expect(item.month).to.be.a(\"string\");\r",
+									"        pm.expect(item.post_count).to.be.a(\"number\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Test 5: Validate structure of MonthlyComments array\r",
+									"pm.test(\"Validate structure of MonthlyComments array\", function () {\r",
+									"    response.MonthlyComments.forEach((item) => {\r",
+									"        pm.expect(item).to.have.keys([\"year\", \"month\", \"comment_count\"]);\r",
+									"        pm.expect(item.year).to.be.a(\"number\");\r",
+									"        pm.expect(item.month).to.be.a(\"string\");\r",
+									"        pm.expect(item.comment_count).to.be.a(\"number\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Test 6: Validate structure of MonthlyLikes array\r",
+									"pm.test(\"Validate structure of MonthlyLikes array\", function () {\r",
+									"    response.MonthlyLikes.forEach((item) => {\r",
+									"        pm.expect(item).to.have.keys([\"year\", \"month\", \"likes_count\"]);\r",
+									"        pm.expect(item.year).to.be.a(\"number\");\r",
+									"        pm.expect(item.month).to.be.a(\"string\");\r",
+									"        pm.expect(item.likes_count).to.be.a(\"number\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Test 7: Validate specific values (example for TotalPosts)\r",
+									"pm.test(\"Validate specific values in response\", function () {\r",
+									"    pm.expect(response.TotalPosts).to.equal(100);\r",
+									"    pm.expect(response.TotalComment).to.equal(200);\r",
+									"    pm.expect(response.TotalLikes).to.equal(\"26487\");\r",
+									"    pm.expect(response.TotalVisits).to.equal(245);\r",
+									"    pm.expect(response.TotalUsers).to.equal(20);\r",
+									"    pm.expect(response.TotalCategories).to.equal(20);\r",
+									"    pm.expect(response.ActifUsers).to.equal(0);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/Dashboard",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Dashboard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "invalid authentication",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify unauthenticated response\", () => {\r",
+									"    // Check for 401 Unauthorized status code\r",
+									"    pm.response.to.have.status(401);\r",
+									"\r",
+									"    // Verify response structure and message (if present)\r",
+									"    const response = pm.response.json();\r",
+									"\r",
+									"    pm.expect(response).to.be.an(\"object\"); // Response should be a JSON object\r",
+									"    pm.expect(response).to.have.property(\"error\").that.is.a(\"string\");\r",
+									"    pm.expect(response.error).to.match(/unauthenticated|unauthorized/i);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/Dashboard",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Dashboard"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "Get posts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify response structure and data types\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"\r",
+									"    // Ensure the response is an array\r",
+									"    pm.expect(response).to.be.an(\"array\");\r",
+									"\r",
+									"    // Iterate through each post in the array and verify its structure\r",
+									"    response.forEach((post) => {\r",
+									"        // Check required properties\r",
+									"        pm.expect(post).to.have.property(\"id\").that.is.a(\"number\");\r",
+									"        pm.expect(post).to.have.property(\"title\").that.is.a(\"string\");\r",
+									"        pm.expect(post).to.have.property(\"likes\").that.is.a(\"number\");\r",
+									"        pm.expect(post).to.have.property(\"picture\").that.is.a(\"string\");\r",
+									"\r",
+									"        pm.expect(post).to.have.property(\"created_at\").that.is.a(\"string\");\r",
+									"        pm.expect(new Date(post.created_at).toString()).not.to.equal(\"Invalid Date\"); // Validate date format\r",
+									"        pm.expect(post).to.have.property(\"content\").that.is.a(\"string\");\r",
+									"        pm.expect(post).to.have.property(\"category_name\").that.is.a(\"string\");\r",
+									"        pm.expect(post).to.have.property(\"comment_count\").that.is.a(\"number\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify specific constraints\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"\r",
+									"    // Ensure all IDs are unique\r",
+									"    const ids = response.map(post => post.id);\r",
+									"    const uniqueIds = [...new Set(ids)];\r",
+									"    pm.expect(ids.length).to.equal(uniqueIds.length);\r",
+									"\r",
+									"    // Ensure all likes are non-negative\r",
+									"    response.forEach((post) => {\r",
+									"        pm.expect(post.likes).to.be.at.least(0);\r",
+									"    });\r",
+									"\r",
+									"    // Ensure comment_count is non-negative\r",
+									"    response.forEach((post) => {\r",
+									"        pm.expect(post.comment_count).to.be.at.least(0);\r",
+									"    });\r",
+									"\r",
+									"    // Optional: Verify the number of posts is within an expected range\r",
+									"    pm.expect(response.length).to.be.at.most(100); // Adjust as necessary\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/Posts",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify response structure and data types\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"\r",
+									"    // Ensure the response is an array\r",
+									"    pm.expect(response).to.be.an(\"array\");\r",
+									"\r",
+									"    // Iterate through each post in the array and verify its structure\r",
+									"    response.forEach((post) => {\r",
+									"        // Check required properties\r",
+									"        pm.expect(post).to.have.property(\"id\").that.is.a(\"number\");\r",
+									"        pm.expect(post).to.have.property(\"title\").that.is.a(\"string\");\r",
+									"        pm.expect(post).to.have.property(\"likes\").that.is.a(\"number\");\r",
+									"        pm.expect(post).to.have.property(\"picture\").that.is.a(\"string\");\r",
+									"\r",
+									"        pm.expect(post).to.have.property(\"created_at\").that.is.a(\"string\");\r",
+									"        pm.expect(new Date(post.created_at).toString()).not.to.equal(\"Invalid Date\"); // Validate date format\r",
+									"        pm.expect(post).to.have.property(\"content\").that.is.a(\"string\");\r",
+									"        pm.expect(post).to.have.property(\"category_name\").that.is.a(\"string\");\r",
+									"        pm.expect(post).to.have.property(\"comment_count\").that.is.a(\"number\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify specific constraints\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"\r",
+									"    // Ensure all IDs are unique\r",
+									"    const ids = response.map(post => post.id);\r",
+									"    const uniqueIds = [...new Set(ids)];\r",
+									"    pm.expect(ids.length).to.equal(uniqueIds.length);\r",
+									"\r",
+									"    // Ensure all likes are non-negative\r",
+									"    response.forEach((post) => {\r",
+									"        pm.expect(post.likes).to.be.at.least(0);\r",
+									"    });\r",
+									"\r",
+									"    // Ensure comment_count is non-negative\r",
+									"    response.forEach((post) => {\r",
+									"        pm.expect(post.comment_count).to.be.at.least(0);\r",
+									"    });\r",
+									"\r",
+									"    // Optional: Verify the number of posts is within an expected range\r",
+									"    pm.expect(response.length).to.be.at.most(100); // Adjust as necessary\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/Posts",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update post details",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify response structure and data types\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"\r",
+									"    // Ensure the response is an array\r",
+									"    pm.expect(response).to.be.an(\"array\");\r",
+									"\r",
+									"    // Iterate through each post in the array and verify its structure\r",
+									"    response.forEach((post) => {\r",
+									"        // Check required properties\r",
+									"        pm.expect(post).to.have.property(\"id\").that.is.a(\"number\");\r",
+									"        pm.expect(post).to.have.property(\"title\").that.is.a(\"string\");\r",
+									"        pm.expect(post).to.have.property(\"likes\").that.is.a(\"number\");\r",
+									"        pm.expect(post).to.have.property(\"picture\").that.is.a(\"string\");\r",
+									"\r",
+									"        pm.expect(post).to.have.property(\"created_at\").that.is.a(\"string\");\r",
+									"        pm.expect(new Date(post.created_at).toString()).not.to.equal(\"Invalid Date\"); // Validate date format\r",
+									"        pm.expect(post).to.have.property(\"content\").that.is.a(\"string\");\r",
+									"        pm.expect(post).to.have.property(\"category_name\").that.is.a(\"string\");\r",
+									"        pm.expect(post).to.have.property(\"comment_count\").that.is.a(\"number\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify specific constraints\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"\r",
+									"    // Ensure all IDs are unique\r",
+									"    const ids = response.map(post => post.id);\r",
+									"    const uniqueIds = [...new Set(ids)];\r",
+									"    pm.expect(ids.length).to.equal(uniqueIds.length);\r",
+									"\r",
+									"    // Ensure all likes are non-negative\r",
+									"    response.forEach((post) => {\r",
+									"        pm.expect(post.likes).to.be.at.least(0);\r",
+									"    });\r",
+									"\r",
+									"    // Ensure comment_count is non-negative\r",
+									"    response.forEach((post) => {\r",
+									"        pm.expect(post.comment_count).to.be.at.least(0);\r",
+									"    });\r",
+									"\r",
+									"    // Optional: Verify the number of posts is within an expected range\r",
+									"    pm.expect(response.length).to.be.at.most(100); // Adjust as necessary\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/Posts",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify response structure and data types\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"\r",
+									"    // Check root-level properties\r",
+									"    pm.expect(response).to.have.property(\"id\").that.is.a(\"number\");\r",
+									"    pm.expect(response).to.have.property(\"title\").that.is.a(\"string\");\r",
+									"    pm.expect(response).to.have.property(\"picture\").that.is.a(\"string\");\r",
+									"    pm.expect(response).to.have.property(\"category\").that.is.a(\"string\");\r",
+									"    pm.expect(response).to.have.property(\"content\").that.is.a(\"string\");\r",
+									"    pm.expect(response).to.have.property(\"likes\").that.is.a(\"number\");\r",
+									"    pm.expect(response).to.have.property(\"created_at\").that.is.a(\"string\");\r",
+									"    pm.expect(new Date(response.created_at).toString()).not.to.equal(\"Invalid Date\"); // Validate date format\r",
+									"    pm.expect(response).to.have.property(\"updated_at\").that.is.a(\"string\");\r",
+									"    pm.expect(new Date(response.updated_at).toString()).not.to.equal(\"Invalid Date\");\r",
+									"\r",
+									"    // Check comments array\r",
+									"    pm.expect(response).to.have.property(\"comments\").that.is.an(\"array\");\r",
+									"    response.comments.forEach((comment) => {\r",
+									"        pm.expect(comment).to.have.property(\"id\").that.is.a(\"number\");\r",
+									"        pm.expect(comment).to.have.property(\"user_id\").that.is.a(\"number\");\r",
+									"        pm.expect(comment).to.have.property(\"post_id\").that.is.a(\"number\");\r",
+									"        pm.expect(comment.post_id).to.equal(response.id); // Ensure post_id matches parent post id\r",
+									"        pm.expect(comment).to.have.property(\"body\").that.is.a(\"string\");\r",
+									"        pm.expect(comment).to.have.property(\"created_at\").that.is.a(\"string\");\r",
+									"        pm.expect(new Date(comment.created_at).toString()).not.to.equal(\"Invalid Date\");\r",
+									"        pm.expect(comment).to.have.property(\"updated_at\").that.is.a(\"string\");\r",
+									"        pm.expect(new Date(comment.updated_at).toString()).not.to.equal(\"Invalid Date\");\r",
+									"        pm.expect(comment).to.have.property(\"username\").that.is.a(\"string\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify specific constraints\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"\r",
+									"    // Check likes is non-negative\r",
+									"    pm.expect(response.likes).to.be.at.least(0);\r",
+									"\r",
+									"    // Ensure all comments have unique IDs\r",
+									"    const commentIds = response.comments.map(comment => comment.id);\r",
+									"    const uniqueCommentIds = [...new Set(commentIds)];\r",
+									"    pm.expect(commentIds.length).to.equal(uniqueCommentIds.length);\r",
+									"\r",
+									"    // Ensure all user_ids in comments are valid numbers\r",
+									"    response.comments.forEach((comment) => {\r",
+									"        pm.expect(comment.user_id).to.be.a(\"number\");\r",
+									"        pm.expect(comment.user_id).to.be.above(0);\r",
+									"    });\r",
+									"\r",
+									"    // Check created_at and updated_at chronology\r",
+									"    const createdAt = new Date(response.created_at);\r",
+									"    const updatedAt = new Date(response.updated_at);\r",
+									"    pm.expect(updatedAt).to.be.at.least(createdAt);\r",
+									"\r",
+									"    response.comments.forEach((comment) => {\r",
+									"        const commentCreatedAt = new Date(comment.created_at);\r",
+									"        const commentUpdatedAt = new Date(comment.updated_at);\r",
+									"        pm.expect(commentUpdatedAt).to.be.at.least(commentCreatedAt);\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/Posts/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Posts",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify response structure and data types\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"\r",
+									"    // Ensure the response is an array\r",
+									"    pm.expect(response).to.be.an(\"array\");\r",
+									"\r",
+									"    // Iterate through each post in the array and verify its structure\r",
+									"    response.forEach((post) => {\r",
+									"        // Check required properties\r",
+									"        pm.expect(post).to.have.property(\"id\").that.is.a(\"number\");\r",
+									"        pm.expect(post).to.have.property(\"title\").that.is.a(\"string\");\r",
+									"        pm.expect(post).to.have.property(\"likes\").that.is.a(\"number\");\r",
+									"        pm.expect(post).to.have.property(\"picture\").that.is.a(\"string\");\r",
+									"\r",
+									"        pm.expect(post).to.have.property(\"created_at\").that.is.a(\"string\");\r",
+									"        pm.expect(new Date(post.created_at).toString()).not.to.equal(\"Invalid Date\"); // Validate date format\r",
+									"        pm.expect(post).to.have.property(\"content\").that.is.a(\"string\");\r",
+									"        pm.expect(post).to.have.property(\"category_name\").that.is.a(\"string\");\r",
+									"        pm.expect(post).to.have.property(\"comment_count\").that.is.a(\"number\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Verify specific constraints\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"\r",
+									"    // Ensure all IDs are unique\r",
+									"    const ids = response.map(post => post.id);\r",
+									"    const uniqueIds = [...new Set(ids)];\r",
+									"    pm.expect(ids.length).to.equal(uniqueIds.length);\r",
+									"\r",
+									"    // Ensure all likes are non-negative\r",
+									"    response.forEach((post) => {\r",
+									"        pm.expect(post.likes).to.be.at.least(0);\r",
+									"    });\r",
+									"\r",
+									"    // Ensure comment_count is non-negative\r",
+									"    response.forEach((post) => {\r",
+									"        pm.expect(post.comment_count).to.be.at.least(0);\r",
+									"    });\r",
+									"\r",
+									"    // Optional: Verify the number of posts is within an expected range\r",
+									"    pm.expect(response.length).to.be.at.most(100); // Adjust as necessary\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/Posts",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Posts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/Comment/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Comment",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "all categories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/Categories",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "new categories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/Categories",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete categorie",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/Categories/10",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Categories",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update categorie",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\": \"Labor\",\r\n    \"Description\": \"Updated Category Description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/Categories/10",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Categories",
+								"10"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get all users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify user response structure and data constraints\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"\r",
+									"    response.forEach(user => {\r",
+									"        // Validate basic structure\r",
+									"        pm.expect(user).to.have.property(\"id\").that.is.a(\"number\");\r",
+									"        pm.expect(user).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"        pm.expect(user).to.have.property(\"email\").that.is.a(\"string\");\r",
+									"        pm.expect(user.email).to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/); // Validate email format\r",
+									"\r",
+									"        // Validate email verification (null or valid timestamp)\r",
+									"        pm.expect(user).to.have.property(\"email_verified_at\");\r",
+									"        if (user.email_verified_at !== null) {\r",
+									"            pm.expect(new Date(user.email_verified_at).toString()).not.to.equal(\"Invalid Date\");\r",
+									"        }\r",
+									"\r",
+									"        // Validate timestamps\r",
+									"        pm.expect(user).to.have.property(\"last_visit\").that.is.a(\"string\");\r",
+									"        pm.expect(user).to.have.property(\"created_at\").that.is.a(\"string\");\r",
+									"        pm.expect(user).to.have.property(\"updated_at\").that.is.a(\"string\");\r",
+									"\r",
+									"        // Validate proper date format\r",
+									"        const lastVisit = new Date(user.last_visit);\r",
+									"        const createdAt = new Date(user.created_at);\r",
+									"        const updatedAt = new Date(user.updated_at);\r",
+									"\r",
+									"        pm.expect(lastVisit.toString()).not.to.equal(\"Invalid Date\");\r",
+									"        pm.expect(updatedAt.toString()).not.to.equal(\"Invalid Date\");\r",
+									"\r",
+									"        // Handle created_at being in DD-MM-YYYY format\r",
+									"        const createdAtParts = user.created_at.split(\"-\");\r",
+									"        pm.expect(createdAtParts.length).to.equal(3);\r",
+									"        pm.expect(createdAtParts[0]).to.match(/^\\d{2}$/); // Day\r",
+									"        pm.expect(createdAtParts[1]).to.match(/^\\d{2}$/); // Month\r",
+									"        pm.expect(createdAtParts[2]).to.match(/^\\d{4}$/); // Year\r",
+									"\r",
+									"        // Validate chronology\r",
+									"        if (updatedAt < lastVisit) {\r",
+									"            console.warn(\"Warning: 'updated_at' is earlier than 'last_visit'\");\r",
+									"        }\r",
+									"        if (new Date(`${createdAtParts[2]}-${createdAtParts[1]}-${createdAtParts[0]}`) > updatedAt) {\r",
+									"            console.warn(\"Warning: 'created_at' is later than 'updated_at'\");\r",
+									"        }\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/Users",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify user response structure and data constraints\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"\r",
+									"    response.forEach(user => {\r",
+									"        // Validate basic structure\r",
+									"        pm.expect(user).to.have.property(\"id\").that.is.a(\"number\");\r",
+									"        pm.expect(user).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"        pm.expect(user).to.have.property(\"email\").that.is.a(\"string\");\r",
+									"        pm.expect(user.email).to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/); // Validate email format\r",
+									"\r",
+									"        // Validate email verification (null or valid timestamp)\r",
+									"        pm.expect(user).to.have.property(\"email_verified_at\");\r",
+									"        if (user.email_verified_at !== null) {\r",
+									"            pm.expect(new Date(user.email_verified_at).toString()).not.to.equal(\"Invalid Date\");\r",
+									"        }\r",
+									"\r",
+									"        // Validate timestamps\r",
+									"        pm.expect(user).to.have.property(\"last_visit\").that.is.a(\"string\");\r",
+									"        pm.expect(user).to.have.property(\"created_at\").that.is.a(\"string\");\r",
+									"        pm.expect(user).to.have.property(\"updated_at\").that.is.a(\"string\");\r",
+									"\r",
+									"        // Validate proper date format\r",
+									"        const lastVisit = new Date(user.last_visit);\r",
+									"        const createdAt = new Date(user.created_at);\r",
+									"        const updatedAt = new Date(user.updated_at);\r",
+									"\r",
+									"        pm.expect(lastVisit.toString()).not.to.equal(\"Invalid Date\");\r",
+									"        pm.expect(updatedAt.toString()).not.to.equal(\"Invalid Date\");\r",
+									"\r",
+									"        // Handle created_at being in DD-MM-YYYY format\r",
+									"        const createdAtParts = user.created_at.split(\"-\");\r",
+									"        pm.expect(createdAtParts.length).to.equal(3);\r",
+									"        pm.expect(createdAtParts[0]).to.match(/^\\d{2}$/); // Day\r",
+									"        pm.expect(createdAtParts[1]).to.match(/^\\d{2}$/); // Month\r",
+									"        pm.expect(createdAtParts[2]).to.match(/^\\d{4}$/); // Year\r",
+									"\r",
+									"        // Validate chronology\r",
+									"        if (updatedAt < lastVisit) {\r",
+									"            console.warn(\"Warning: 'updated_at' is earlier than 'last_visit'\");\r",
+									"        }\r",
+									"        if (new Date(`${createdAtParts[2]}-${createdAtParts[1]}-${createdAtParts[0]}`) > updatedAt) {\r",
+									"            console.warn(\"Warning: 'created_at' is later than 'updated_at'\");\r",
+									"        }\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/Users/20",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Users",
+								"20"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a user Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify user update success response\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"\r",
+									"    // Check response status is 200 OK\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    // Verify response structure\r",
+									"    pm.expect(response).to.be.an(\"object\");\r",
+									"    pm.expect(response).to.have.property(\"message\");\r",
+									"    \r",
+									"    // Check the message content\r",
+									"    pm.expect(response.message).to.equal(\"User updated successfully\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json, text/plain, */*"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en-US,en;q=0.9,fr;q=0.8,fr-FR;q=0.7,ar;q=0.6"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{authToken}}"
+							},
+							{
+								"key": "Connection",
+								"value": "keep-alive"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Origin",
+								"value": "http://localhost:3000"
+							},
+							{
+								"key": "Referer",
+								"value": "http://localhost:3000/"
+							},
+							{
+								"key": "Sec-Fetch-Dest",
+								"value": "empty"
+							},
+							{
+								"key": "Sec-Fetch-Mode",
+								"value": "cors"
+							},
+							{
+								"key": "Sec-Fetch-Site",
+								"value": "cross-site"
+							},
+							{
+								"key": "User-Agent",
+								"value": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Mobile Safari/537.36"
+							},
+							{
+								"key": "sec-ch-ua",
+								"value": "\"Not(A:Brand\";v=\"99\", \"Google Chrome\";v=\"133\", \"Chromium\";v=\"133\""
+							},
+							{
+								"key": "sec-ch-ua-mobile",
+								"value": "?1"
+							},
+							{
+								"key": "sec-ch-ua-platform",
+								"value": "\"Android\""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"id\":2,\"name\":\"Enrico West\",\"email\":\"miller.sophie@example.net\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/Users/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contact",
+			"item": [
+				{
+					"name": "Get all contact",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify message data structure and constraints\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"\r",
+									"    // Ensure response is an array\r",
+									"    pm.expect(response).to.be.an(\"array\").that.is.not.empty;\r",
+									"\r",
+									"    response.forEach(item => {\r",
+									"        // Validate basic structure\r",
+									"        pm.expect(item).to.have.property(\"id\").that.is.a(\"number\");\r",
+									"        pm.expect(item).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"        pm.expect(item).to.have.property(\"email\").that.is.a(\"string\");\r",
+									"        pm.expect(item).to.have.property(\"subject\").that.is.a(\"string\");\r",
+									"        pm.expect(item).to.have.property(\"date\").that.is.a(\"string\");\r",
+									"        pm.expect(item).to.have.property(\"read\").that.is.a(\"number\");\r",
+									"\r",
+									"        // Validate email format\r",
+									"        pm.expect(item.email).to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/);\r",
+									"\r",
+									"        // Validate date format (DD-MM-YYYY)\r",
+									"        const dateParts = item.date.split(\"-\");\r",
+									"        pm.expect(dateParts.length).to.equal(3);\r",
+									"        pm.expect(dateParts[0]).to.match(/^\\d{2}$/); // Day\r",
+									"        pm.expect(dateParts[1]).to.match(/^\\d{2}$/); // Month\r",
+									"        pm.expect(dateParts[2]).to.match(/^\\d{4}$/); // Year\r",
+									"\r",
+									"        // Validate 'read' field is either 0 or 1\r",
+									"        pm.expect([0, 1]).to.include(item.read);\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/Contact",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Contact"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update read for the message",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify message marked as read response\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"\r",
+									"    // Check response status is 200 OK\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    // Validate response structure\r",
+									"    pm.expect(response).to.be.an(\"object\");\r",
+									"    pm.expect(response).to.have.property(\"message\");\r",
+									"    \r",
+									"    // Check the message content\r",
+									"    pm.expect(response.message).to.equal(\"Message marked as read\");\r",
+									"\r",
+									"    // Validate that the response contains an index \"0\" with value \"1\"\r",
+									"    pm.expect(response).to.have.property(\"0\").that.is.a(\"string\");\r",
+									"    pm.expect(response[\"0\"]).to.equal(\"1\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/Contact/Read/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Contact",
+								"Read",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a contact",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Verify message deletion response\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"\r",
+									"    // Check response status is 200 OK\r",
+									"    pm.response.to.have.status(200);\r",
+									"\r",
+									"    // Validate response structure\r",
+									"    pm.expect(response).to.be.an(\"object\");\r",
+									"    pm.expect(response).to.have.property(\"message\");\r",
+									"    \r",
+									"    // Check the message content\r",
+									"    pm.expect(response.message).to.equal(\"message deleted successfully\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/Contact/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"Contact",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
